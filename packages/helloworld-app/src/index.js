@@ -32,41 +32,41 @@ const AppHeader = () => (
 const AppBody = observer(() => {
   const { appRuntime, helloworldApp } = useStore();
   const [, setToast] = useToasts()
-  const { state: inc, bindings } = useInput('1')
+  const { state: whisp, bindings } = useInput('1')
 
   /**
-   * Updates the counter by querying the helloworld contract
-   * The type definitions of `GetCount` request and response can be found at contract/helloworld.rs
+   * Updates the whisper by querying the helloworld contract
+   * The type definitions of `GetWhisper` request and response can be found at contract/helloworld.rs
    */
-  async function updateCounter () {
+  async function updateWhisper () {
     if (!helloworldApp) return
     try {
-      const response = await helloworldApp.queryCounter(appRuntime)
+      const response = await helloworldApp.queryWhisper(appRuntime)
       // Print the response in the original to the console
-      console.log('Response::GetCount', response);
+      console.log('Response::GetWhisper', response);
 
-      helloworldApp.setCounter(response.GetCount.count)
+      helloworldApp.setWhisper(response.GetWhisper.whisper)
     } catch (err) {
       setToast(err.message, 'error')
     }
   }
 
   /**
-   * The `increment` transaction payload object
+   * The `setWhisper` transaction payload object
    * It follows the command type definition of the contract (at contract/helloworld.rs)
    */
-  const incrementCommandPayload = useMemo(() => {
-    const num = parseInt(inc)
-    if (isNaN(num) || inc <= 0) {
+  const setWhisperCommandPayload = useMemo(() => {
+    // const num = whisp;
+    if (whisp) {
       return undefined
     } else {
       return {
-        Increment: {
-          value: num
+        setWhisper: {
+          value: whisp
         }
       }
     }
-  }, [inc])
+  }, [whisp])
 
   return (
     <Container>
@@ -77,30 +77,30 @@ const AppBody = observer(() => {
       </section>
       <Spacer y={1}/>
 
-      <h3>Counter</h3>
+      <h3>Super sly secret Whispers</h3>
       <section>
-        <div>Counter: {helloworldApp.counter === null ? 'unknown' : helloworldApp.counter}</div>
-        <div><Button onClick={updateCounter}>Update</Button></div>
+        <div>Last Whisper: {helloworldApp.whisper === null ? 'unknown' : helloworldApp.whisper}</div>
+        <div><Button onClick={updateWhisper}>Update</Button></div>
       </section>
       <Spacer y={1}/>
 
-      <h3>Increment Counter</h3>
+      <h3>Set Whisper</h3>
       <section>
         <div>
-          <Input label="By" {...bindings} />
+          <Input label="Message" type="value" {...bindings} />
         </div>
         <ButtonWrapper>
           {/**  
             * PushCommandButton is the easy way to send confidential contract txs.
-            * Below it's configurated to send HelloWorld::Increment()
+            * Below it's configurated to send HelloWorld::SetWhisper()
             */}
           <PushCommandButton
               // tx arguments
               contractId={CONTRACT_HELLOWORLD}
-              payload={incrementCommandPayload}
+              payload={setWhisperCommandPayload}
               // display messages
-              modalTitle='HelloWorld.Increament()'
-              modalSubtitle={`Increment the counter by ${inc}`}
+              modalTitle='HelloWorld.SetWhisper()'
+              modalSubtitle={`Set whisper value to ${whisp}`}
               onSuccessMsg='Tx succeeded'
               // button appearance
               buttonType='secondaryLight'
