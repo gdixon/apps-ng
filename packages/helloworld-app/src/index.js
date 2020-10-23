@@ -22,7 +22,7 @@ const ButtonWrapper = styled.div`
  */
 const AppHeader = () => (
   <Container>
-    <h1>Hello World!</h1>
+    <h1>Secret Whispers!</h1>
   </Container>
 )
 
@@ -57,14 +57,11 @@ const AppBody = observer(() => {
    */
   const setWhisperCommandPayload = useMemo(() => {
     // const num = whisp;
-    if (whisp) {
-      return undefined
-    } else {
-      return {
-        setWhisper: {
-          value: whisp
+    
+    return {
+        SetWhisper: {
+            whisper: whisp
         }
-      }
     }
   }, [whisp])
 
@@ -77,7 +74,7 @@ const AppBody = observer(() => {
       </section>
       <Spacer y={1}/>
 
-      <h3>Super sly secret Whispers</h3>
+      <h3>Super Sly Secret Whisper</h3>
       <section>
         <div>Last Whisper: {helloworldApp.whisper === null ? 'unknown' : helloworldApp.whisper}</div>
         <div><Button onClick={updateWhisper}>Update</Button></div>
@@ -87,7 +84,7 @@ const AppBody = observer(() => {
       <h3>Set Whisper</h3>
       <section>
         <div>
-          <Input label="Message" type="value" {...bindings} />
+          <Input label="Whisper" type="value" {...bindings} />
         </div>
         <ButtonWrapper>
           {/**  
@@ -123,7 +120,7 @@ const StoreInjector = observer(({ children }) => {
 
   useEffect(() => {
     if (!appStore || !appStore.appRuntime) return
-    if (typeof appStore.hellowrldApp !== 'undefined') return
+    if (typeof appStore.helloworldApp !== 'undefined') return
     appStore.helloworldApp = createHelloWorldAppStore({})
   }, [appStore])
 

@@ -8,8 +8,8 @@ export const createHelloWorldAppStore = (defaultValue = {}, options = {}) => {
       whisper: types.maybeNull(types.string)
     })
     .actions(self => ({
-      setWhisper (num) {
-        self.whisper = num
+      setWhisper (whisp) {
+        self.whisper = whisp
       },
       async queryWhisper (runtime) {
         return await runtime.query(CONTRACT_HELLOWORLD, 'GetWhisper')
